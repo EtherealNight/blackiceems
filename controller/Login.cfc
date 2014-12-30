@@ -5,7 +5,13 @@
 			<cfset variables.DSN = arguments.DSN />
 			<cfreturn this />
 	</cffunction>
-		<!---User Registraton--->
+    <!---Flex app CFC Remoting test function--->
+    <cffunction name="confirmCFC" access="remote" 
+    returntype="any" 
+    description="tests the remote object communication between View the controller code" >
+    <cfreturn "Your Flex Remoting with this CFC is successful."/>
+    </cffunction>
+    		<!---User Registraton--->
         <!---Function pulls form values from flex form via Remote Object Call--->
 	<cffunction name="add_info" access="remote" output="false" returntype="any">
 			<cfargument name="firstname" type="string" >
