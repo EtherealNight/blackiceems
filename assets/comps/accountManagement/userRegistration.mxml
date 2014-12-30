@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="764" height="434"
+		 width.State1="630"  creationComplete="initApp()">
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		s|Form#form1 s|FormItem
+		{
+			skinClass: ClassReference("spark.skins.spark.FormItemSkin");
+		}
+		s|Form#form1 s|FormHeading
+		{
+			skinClass: ClassReference("spark.skins.spark.FormHeadingSkin");
+		}
+		s|Form#form1
+		{
+			skinClass: ClassReference("spark.skins.spark.FormSkin");
+		}
+	</fx:Style>
+	<fx:Script>
+		<![CDATA[
+			import assets.*;
+			import model.*;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.ObjectUtil;
+			import vo.*;
+			
+			[Bindable]
+			public var cfcResponse:String;
+			
+			//this gets called when the application is done being created
+			
+			public function initApp():void{
+				
+				//this calls the confirmCFC method in remoting.cfc
+				
+				cfc_ro.confirmCFC();
+				
+			}
+			public function loadConfirm(event:ResultEvent):void{
+				//this binds the cfcResponse var to the result of the RO call
+				cfcResponse = event.result as String;
+				
+			}
+		
+			
+			//Method submits registration information to the DB via the controller Registration.cfc
+			//Upon Successful registration, user receives a confirmation of their successful registration.
+			protected function createUser():void
+			{
+				
+			}
+			//Method initiated on the Reset button click and clears form fields
+			protected function _resetForm():void 
+			{
+				fName.text = "";
+				lName.text = "";
+			    userName.text = "";
+				password.text = ""
+				city.text = "";
+				state.selectedIndex -1;
+				email.text = "";
+				confirm_email.text = "";
+				
+			}
+			
+			//--On Submit form function. Passes form content to the newMemberVO.
+			protected function onSubmit():void
+			{
+				//if (validateAll)
+				{
+					var newMember:NewMemberVO = new NewMemberVO;
+					newMember.fName      = fName.text;
+					newMember.lName      = lName.text;
+					newMember.city       = city.text;
+					newMember.zip        = zip.text;
+					newMember.state      = state.name;
+					newMember.email      = email.text;
+				}
+			}
+			
+			
+		]]>
+	</fx:Script>
+<fx:Declarations>
+<s:RemoteObject id="cfc_ro" destination="ColdFusion" source="BlackICE-Equine Management-debug.controller.Register" showBusyCursor="true">
+	<s:method name="confirmCFC" result="loadConfirm(event)" fault="Alert.show(ObjectUtil.toString(event))"/>
+</s:RemoteObject>	
+
+	
+</fx:Declarations>
+	<!--Form States. First state collects contains registration fields. Second state contains password recovery fields-->
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="p2"/>
+	</s:states>
+	<!--State transitions go here-->
+	<s:transitions>
+		<s:Transition fromState="*">
+			<s:Parallel>
+				<s:Fade id="fadeEffect1" duration="1000" target="{RegForm}" alphaFrom="0.0" alphaTo="1.0"/>
+			</s:Parallel> 
+		</s:Transition>
+	</s:transitions>
+
+	<!--End of Transitions Code Block-->
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->		
+		<!--This remote object passes form data from the form into the CFC DAO. Data Validates on client and server side.-->
+		
+		<!-- Defines the data model for the form. -->
+		<!--<fx:Model id="formInfo">
+			<formData>
+				<date>
+					<month>{monthInput.text}</month>
+					<day>{dayInput.text}</day>
+					<year>{yearInput.text}</year>
+				</date>
+				<name>
+					<firstName>{fNameInput.text}</firstName>
+					<lastName>{lNameInput.text}</lastName>
+				</name>
+				<phoneNum>{phoneInput.text}</phoneNum>
+			</formData>
+		</fx:Model>-->
+		<!-- Define the validators. -->
+		<mx:StringValidator id="fNameValidator" 
+							required="true"
+							source="{fName}" 
+							property="text"
+							minLength="3"
+							maxLength="10"
+							tooShortError="Your entry is too short to be a valid last name."
+							tooLongError="Your entry is too long to be a valid first name."/>
+		<mx:StringValidator id="lNameValidator" 
+							required="true"
+							source="{lName}" 
+							property="text"
+							minLength="2"
+							maxLength="12"
+							tooShortError="Your entry is too short to be a valid last name."
+							tooLongError="Your entry is too long for a last name."/>
+		<mx:StringValidator id="cityValidator" 
+							required="true" 
+							source="{city}" 
+							property="text"
+							minLength="4"
+							maxLength="15"
+							tooShortError="Your city name is too short to be valid"/>
+		<mx:StringValidator id="stateValidator" 
+							required="true" 
+							source="{state}" 
+							property="text"/>
+		<mx:ZipCodeValidator id="zipcodeValidator"
+							 required="true"
+							 source="{zip}"
+							 property="text" />
+		<mx:StringValidator id="emailValidator" 
+							required="true" 
+							source="{email}" 
+							property="text" 
+							tooLongError="Your email address exceeded the maximum length allowed."
+							tooShortError="Your email address is too short to be a valid email address."/>
+		<mx:StringValidator id="confirm_emailValidator" 
+							required="true"
+							source="{confirm_email}" 
+							property="text"/>
+		
+		<mx:StringValidator id="userNameValidator" 
+							required="true" 
+							source="{userName}" 
+							property="text" 
+							minLength="6"
+							maxLength="15"
+							tooShortError="Your username must be a minimum of 6 alphanumeric characters."
+							tooLongError="Your username is too long. Usernames must not exceed 15 alphanumberic characters."/>
+		
+	</fx:Declarations>
+	<!--Form Layout Elements and text fields contained below-->
+	<s:TitleWindow height="100%" close="PopUpManager.removePopUp(this);" controlBarVisible="true"
+				   title="New Member Registration"
+				   width.p2="100%"
+				   width.State1="100%">
+		<s:controlBarContent>
+			<s:Button label="Register"
+					  click.State1="createUser();"/>
+			<s:Button label="Reset"
+					  click.State1="_resetForm();"/>
+		</s:controlBarContent>
+		<s:layout.State1>
+			<s:ConstraintLayout/>
+		</s:layout.State1>
+		<!--Form Starts Here-->
+		<s:Form id="RegForm" width="100%" height="90%" skinClass="spark.skins.spark.FormSkin">
+			<s:SkinnableContainer width="100%" height="350">
+				<s:FormItem id="f_Name" includeIn="State1" label="First Name">
+					<s:TextInput id="fName" width="100%" displayAsPassword="false" tabEnabled="true"
+								 tabFocusEnabled="true" tabIndex="0"/>
+				</s:FormItem>
+				<s:FormItem id="l_Name" includeIn="State1" x="230" label="Last Name">
+					<s:TextInput id="lName" tabEnabled="true" tabFocusEnabled="true" tabIndex="1"/>
+				</s:FormItem>
+				<s:FormItem id="frm_city" includeIn="State1" x="0" y="53" label="City">
+					<s:TextInput id="city" tabIndex="2"/>
+				</s:FormItem>
+				<s:FormItem id="frm_zip" includeIn="State1" x="332" y="55" width="161"
+							label="Zip Code">
+					<s:TextInput id="zip" width="77"/>
+				</s:FormItem>
+				<s:FormItem id="frm_state" includeIn="State1" x="206" y="55" width="132" height="41"
+							label="State">
+					<s:ComboBox id="state" width="65" selectedIndex="-1" tabEnabled="true"
+								tabFocusEnabled="true" tabIndex="3"/>
+				</s:FormItem>
+				<s:FormItem id="frm_email" includeIn="State1" x="0" y="100" width="214" label="Email">
+					<s:TextInput id="email" width="152"/>
+				</s:FormItem>
+				<s:FormItem id="frm_cfirm_email" includeIn="State1" x="257" y="100" width="279"
+							label="Confirm Email">
+					<s:TextInput id="confirm_email" width="152"/>
+				</s:FormItem>
+				<s:FormItem id="frm_username" includeIn="State1" x="1" y="142" width="213"
+							label="Username">
+					<s:TextInput id="userName"/>
+				</s:FormItem>
+				<s:FormItem id="frm_password" includeIn="State1" x="-1" y="191" width="215"
+							label="Password">
+					<s:TextInput id="password" displayAsPassword="true"/>
+				</s:FormItem>
+				<s:Button x="0" y="326" label="&gt;&gt; Next"
+						  x.p2="0" y.p2="328" width.p2="96" label.p2="&lt;&lt; Previous"
+						  click.p2="currentState='State1'"
+						  x.State1="0" y.State1="328" click.State1="currentState='p2';initApp();"/>
+				<s:FormItem includeIn="p2" x="1" y="10" width="644" label="Security  Question 1:">
+					<s:ComboBox width="409"/>
+				</s:FormItem>
+				<s:FormItem includeIn="p2" x="1" y="108" width="644" label="Security  Question 2:">
+					<s:ComboBox width="409"/>
+				</s:FormItem>
+				<s:FormItem includeIn="p2" x="64" y="58" width="254" label="Answer 1">
+					<s:TextInput width="160"/>
+				</s:FormItem>
+				<s:FormItem includeIn="p2" x="359" y="59" width="286" label="Confirm Answer">
+					<s:TextInput width="160"/>
+				</s:FormItem>
+				<s:FormItem includeIn="p2" x="64" y="159" width="254" label="Answer 1">
+					<s:TextInput width="160"/>
+				</s:FormItem>
+				<s:FormItem includeIn="p2" x="359" y="160" width="286" label="Confirm Answer">
+					<s:TextInput width="160"/>
+				</s:FormItem>
+				<s:FormItem id="frm_DOB" includeIn="State1" x="257" y="153" label="D.O.B.">
+					<mx:DateChooser id="DOB" x="183" y="288" width="189" height="146"/>
+				</s:FormItem>
+				<s:Label includeIn="State1" x="0" y="240" width="171" height="40" color="#F6F309"
+						 text="{cfcResponse}"/>
+			</s:SkinnableContainer>
+		</s:Form>
+	</s:TitleWindow>
+</s:Group>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="233">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+		<!--Remote Object calls the login component located in the controller drectory-->
+		<mx:RemoteObject id="Login" source="Remote" showBusyCursor="true" destination="controller.login" fault="Alert.show('Remote Object Error. Please contact admin')">
+			<!--<s:Method name="loginMethod" result="roLoginResult(event)"/>-->
+		</mx:RemoteObject>
+		<!--Ends Login Remote Object Call-->
+		
+		<!--This block contains the form validators for client-side form field validation of user input-->
+		<mx:StringValidator id="UserName_Validator" source="{userName}" property="text" triggerEvent=""  requiredFieldError="Username is required. Please enter your username and password"/>
+		
+	</fx:Declarations>
+	<fx:Metadata>
+		[Event(name="login", type="events.login")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import assets.*;
+			import model.*;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.logging.Log;
+			import mx.managers.PopUpManager;
+			import mx.messaging.AbstractConsumer;
+			
+			import vo.*;
+			
+			//Function validates username and password field values
+			//If values are true, function sets login
+			
+			//private var sessionStatus:String;
+			//private var userNames:String;
+			//private var password:String;
+			//private var myLogin:LoginVO
+			//protected function loginHandler(event:LoginEvent):void 
+			//{
+			    
+				//if (userNames == '1' && password =='1')
+				//	sessionStatus =='1'
+				//	else sessionStatus =='0'
+			//}
+			
+			
+		]]>
+	</fx:Script>
+	<!--Login Form-->
+	<!--Login Form takes username and passowrd-->
+	<!--They are validated on the client and the on the server site-->
+	<s:TitleWindow x="0" y="0" width="100%" height="232" controlBarVisible="true" title="Member Login" close="PopUpManager.removePopUp(this);">
+		<s:controlBarContent>
+		</s:controlBarContent>
+		<s:Form x="0" y="0" width="100%" height="193" skinClass="spark.skins.spark.FormSkin">
+	    <s:SkinnableContainer width="100%" height="174">
+		<s:FormItem id="userName" x="75" y="11" label="User Name:">
+		<s:TextInput id="userNameField"/>
+		</s:FormItem>
+		<s:FormItem x="75" y="55" width="241" label="Password:">
+		<s:TextInput id="passwordField" width="121" displayAsPassword="true" />
+		</s:FormItem>
+			<s:Label x="75" y="113" height="16" color="#FFFFFF" fontSize="12" text="Forgot Password?"/>
+			<mx:LinkButton x="181" y="108" label="Click Here" color="#ECCE02" fontSize="12"/>
+			<s:Button x="75" y="143" label="Login" color="#F7F7FC"/>
+		</s:SkinnableContainer>
+		</s:Form>
+	</s:TitleWindow>
+	
+</s:Group>

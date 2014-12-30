@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+ 
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="400" height="233"
+		 width.State1="460" height.State1="291">
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="usernameRecovery"/>
+		<s:State name="passwordRecovery"/>
+		<s:State name="acctRecovery"/>
+	</s:states>
+	<fx:Declarations> 
+		<!-- Place non-visual elements (e.g., services, value objects) here -->	
+	
+		<!--09/11/2014 Left off with conditional if statements. Setting up condintional string to set end state of component-->
+		<fx:Script>
+			import mx.controls.Alert;
+			<![CDATA[				
+				public var recordCount:String ;
+				public var passwordCout:String;
+				//test function sets recordCount statically to test conditional code to ensure user receives the alert
+				private function test():void
+				{
+				recordCount.String='1';	
+				}
+				//Code block runs a conditional.
+				//If the record count is 1 then user is informed of a successful recovery
+				//otherwise the user is notified of an unsuccessful attemot to retrieve an account not successfully located.
+				if (recordCount== "1")
+					Alert.show("Password Successfully Retrieved. Please check your inbox for recovery email.")	
+				else if (recordCount < "1")
+					Alert.show("No registered account was found. If you are new to BlackIce EMS, please register as a new user.")
+					
+			]]>
+		</fx:Script>
+		
+		<!--Remote Object calls the login component located in the controller drectory-->
+		<mx:RemoteObject id="acctrecovery" source="Remote" showBusyCursor="true" destination="controller.login" fault="Alert.show('Remote Object Error. Please contact admin')">
+			<s:Method name="loginMethod" result="roLoginResult(event)"/>
+		</mx:RemoteObject>
+		<s:RadioButtonGroup id="radiogroup1"/>
+		<!--Ends Login Remote Object Call-->
+		
+	</fx:Declarations>
+	<!--Login Form-->
+	<s:Panel x="0" y="0" width="100%" height="232" controlBarVisible="true" title="Member Login"
+			 title.acctRecovery="Black Ice Account Recovery"
+			 title.passwordRecovery="Black Ice Account Recovery"
+			 width.State1="471" height.State1="293"
+			 title.usernameRecovery="Black Ice Account Recovery">
+		<s:controlBarContent>
+		</s:controlBarContent>
+		<s:Form x="0" y="0" width="100%" height="193" skinClass="spark.skins.spark.FormSkin"
+				height.State1="234">
+		<s:SkinnableContainer width="100%" height="174"  width.State1="441">
+		<s:VGroup includeIn="State1" x="128" y="36" width="123" height="61">
+					<s:RadioButton label="Recover Password"
+								   click="currentState=&quot;passwordRecov&quot;"
+								   groupName="radiogroup1"/>
+					<s:RadioButton label="Recover Username"
+								   click="currentState='usernameRecovery&quot;"
+								   groupName="radiogroup1"/>
+					<s:RadioButton label="Recover Both" click="currentState='acctRecov'"
+								   groupName="radiogroup1"/>
+		</s:VGroup>
+		<s:Label includeIn="State1" x="76" y="14" height="23" fontSize="12" fontWeight="bold"
+						 text="Please Select A Recovery Option Below"/>
+		<s:Button includeIn="acctRecovery,passwordRecovery,usernameRecovery" x="10" y="142" label="Go back"
+						  click="currentState=''" color="#FD0183" fontWeight="bold"/>
+		<s:FormItem id="emailAddress" includeIn="acctRecovery,passwordRecovery,usernameRecovery" x="12" y="25" width="356"
+							label="Email Address:">
+					<s:TextInput id="fName0" width="247"/>
+		</s:FormItem>
+		<s:Label includeIn="acctRecovery,passwordRecovery,usernameRecovery" x="75" y="10" fontSize="12" fontWeight="bold"
+						 text="Please Enter Your Email Address"/>
+		<s:Button includeIn="acctRecovery,passwordRecovery,usernameRecovery" x="11" y="70"
+						  label="Recover my username now!" click="currentState=''" color="#FD0183"
+						  fontWeight="bold"
+						  label.acctRecovery="Recover my account now!"
+						  label.passwordRecovery="Recover my password now!"/>
+		</s:SkinnableContainer>
+		</s:Form>
+	</s:Panel>
+</s:Group>

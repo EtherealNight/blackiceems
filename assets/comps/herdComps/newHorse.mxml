@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="602" height="472" backgroundColor="#BB0F68"
+		 title="Create New Horse">
+	
+	<fx:Declarations>
+		<!--Form Arrays-->
+		<!--Breed Array-->
+		<mx:ArrayCollection id="breedArray">
+			<!-- Use an fx:Array tag to associate an id with the array. -->	
+			<fx:Array id="breeds">
+				<fx:Object label="Arab" data="Arab"/>
+				<fx:Object label="Hanoverian" data="Hanoverian"/>
+				<fx:Object label="MA" data="Boston"/>
+				<fx:Object label="MT" data="Helena"/>
+				<fx:Object label="ME" data="Augusta"/>
+				<fx:Object label="MS" data="Jackson"/>
+				<fx:Object label="MN" data="Saint Paul"/>
+			</fx:Array>
+		</mx:ArrayCollection>
+		<!--Height Array-->
+		<mx:ArrayCollection id="heightArray">
+			<!-- Use an fx:Array tag to associate an id with the array. -->	
+			<fx:Array id="height">
+				<fx:Object label="12H" data="12H"/>
+				<fx:Object label="12.1" data="12.1"/>
+				<fx:Object label="12.2" data="12.2"/>
+				<fx:Object label="12.3" data="12.3"/>
+				<fx:Object label="13H" data="13H"/>
+				<fx:Object label="13.1" data="13.1"/>
+				<fx:Object label="13.2" data="13.2"/>
+				<fx:Object label="13.3" data="13.3"/>
+				<fx:Object label="14H" data="14H"/>
+				<fx:Object label="14.1" data="14.1"/>
+				<fx:Object label="14.2" data="14.2"/>
+				<fx:Object label="14.3" data="14.3"/>
+				<fx:Object label="15H" data="15H"/>
+				<fx:Object label="15.1" data="15.1"/>
+				<fx:Object label="15.2" data="15.2"/>
+				<fx:Object label="15.3" data="15.3"/>
+				<fx:Object label="16H" data="16H"/>
+				<fx:Object label="16.1" data="16.1"/>
+				<fx:Object label="16.2" data="16.2"/>
+				<fx:Object label="16.3" data="16.3"/>
+				<fx:Object label="17H" data="17H"/>
+				<fx:Object label="17.1" data="17.1"/>
+				<fx:Object label="17.2" data="17.2"/>
+				<fx:Object label="17.3" data="17.3"/>
+				<fx:Object label="18H" data="18H"/>
+				<fx:Object label="18.1" data="18.1"/>
+				<fx:Object label="18.2" data="18.2"/>
+				<fx:Object label="18.3" data="18.3"/>
+				<fx:Object label="19H" data="19H"/>
+				<fx:Object label="19.1" data="19.1"/>
+				<fx:Object label="19.2" data="19.2"/>
+				<fx:Object label="19.3" data="19.3"/>
+				<fx:Object label="20H" data="20H"/>
+			</fx:Array>
+		</mx:ArrayCollection>
+		<!--Temperament Array-->
+		<mx:ArrayCollection id="temperamentArray">
+			<!-- Use an fx:Array tag to associate an id with the array. -->	
+			<fx:Array id="breeds">
+				<fx:Object label="1-Very Calm" data="1"/>
+				<fx:Object label="2" data="2"/>
+				<fx:Object label="3" data="3"/>
+				<fx:Object label="4" data="4"/>
+				<fx:Object label="5" data="5"/>
+				<fx:Object label="6" data="6"/>
+				<fx:Object label="7" data="7"/>
+				<fx:Object label="8" data="8"/>
+				<fx:Object label="9" data="9"/>
+				<fx:Object label="10-Very High Strung" data="10"/>
+			</fx:Array>
+		</mx:ArrayCollection>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<fx:Script>
+			<![CDATA[
+				private var gender:String = "stallion";
+			]]>
+		</fx:Script>
+	</fx:Declarations>
+	<s:Form width="100%" height="388">
+		<mx:Canvas width="586" height="372">
+			<s:FormItem x="263" y="138" width="234" height="170" label="D.O.B.">
+				<mx:DateChooser width="172" height="151"/>
+			</s:FormItem>
+				
+			<s:HGroup x="0" y="15" width="585" height="53">
+				<s:FormItem label="Name">
+					<s:TextInput/>
+				</s:FormItem>
+				<s:FormItem label="Reg #">
+					<s:TextInput/>
+				</s:FormItem>
+			</s:HGroup>
+			<s:HGroup x="10" y="76" width="487" height="54">
+				<!--<s:FormItem label="Age">
+					<s:ComboBox/>
+				</s:FormItem>-->
+				<s:FormItem width="249" height="43" label="Breed">
+					<s:ComboBox width="184" dataProvider="{breedArray}"/>
+				</s:FormItem>
+				<s:FormItem label="Height">
+					<s:ComboBox id="heightBox" dataProvider="{heightArray}"/>
+				</s:FormItem>
+			</s:HGroup>
+			<s:FormItem x="10" y="182" width="245" label="Temperament">
+				<s:ComboBox/>
+			</s:FormItem>
+			<s:FormItem x="10" y="131" label="Color">
+				<s:ComboBox/>
+			</s:FormItem>
+			
+		</mx:Canvas>
+	</s:Form>
+	<s:HGroup x="10" y="396" width="200" height="40">
+		<s:Button width="94" height="32" label="Submit Form"/>
+		<s:Button width="94" height="32" label="Clear Form"/>
+	</s:HGroup>
+</s:Panel>
