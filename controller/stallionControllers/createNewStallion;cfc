@@ -1,0 +1,55 @@
+<component>
+<!--- 8/21/2015 This component is the  stallion creation component  --->
+<!--- This component contains the methods which enable basic CRUD transactions for stallion objects--->
+
+<cffunction access="remote" returntype="void" name="createNewStallion"             <!--- Method connects to flex UI. Creates a new stallion instance ---> 
+description="creates a new stallion for user account">
+<cfset stallionObject = ArrayNew(1)>
+<!--- Declared Stallion variables --->
+<cfargument name="ownerID" required="yes" hint="owner ID associated with stallion being regitered. "
+<cfargument name="stallionRegisteredName" default="DefaultStallion" required="yes" type="string" hint="stallion's name" >
+<cfargument name="stallionRegNumber" required="no">
+<cfargument name="stallionSire" required="no">
+<cfargument name="stallionDam" required="no">
+<cfargument name="stallionBarnName" default="stallionBarnName" type="string" hint="stallion's unofficialname" >
+<cfargument name="stallionBreed" default="Unknown" type="string" hint="Stallion's original breed" >
+<cfargument name="stallionHeight" default="Unknown" type="any" hint="Keep's track of a stallion's height" >
+<cfargument name="stallionDOB" default="unknown" type="any" hint="store's the result from calculating stallions's current age." >
+<cfargument name="stallionTemperament" default="5" type="numeric" hint="Stallion temperament measured in 1-10 scale" >
+<cfargument name="stallionColor" required="yes">
+<cfargument name="Notes" required="no">
+
+INSERT INTO [dbo].[tblStallion]
+           ([recID]
+           ,[ID]
+           ,[ownerID]
+           ,[registeredName]
+           ,[regNum]
+           ,[sire]
+           ,[dam]
+           ,[name]
+           ,[breed]
+           ,[height]
+           ,[dob]
+           ,[temperament]
+           ,[color]
+           ,[notes])
+     VALUES
+           (
+           
+          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.ownerID#" >
+         ,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.registeredName#" >
+         ,<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regNum#" >
+         ,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sire#" >
+         ,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.dam#" >
+         ,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#" >
+         ,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.breed#">
+         ,<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.height#" >
+         ,<cfqueryparam cfsqltype="cf_sql_date" value="#arguments.dob#" >
+         ,<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.temperament#" >
+         ,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.color#" >
+         ,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.notes#"> )
+
+</cfquery>
+</cffunction>
+</component>
